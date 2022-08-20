@@ -1,11 +1,64 @@
 <html>
-  <head> </head>
-  <body></body>
+  <head></head>
+  <body>
+    <button id="ROCK">ROCK</button>
+    <button id="PAPER">PAPER</button>
+    <button id="SCISSORS">SCISSORS</button>
+    <div id="results"></div>
+  </body>
   <script>
+    let marcadorUsuario = 0,
+      marcadorComputer = 0;
+    const buttons = document.querySelectorAll("button");
+
+    buttons.forEach((button) => {
+      // and for each one we add a 'click' listener
+      button.addEventListener("click", () => {
+        let computerSelection = getComputerChoice();
+        let divResultado = document.getElementById("results");
+        divResultado.innerHTML +=
+          "<span>User: " +
+          button.id +
+          " - Computer: " +
+          computerSelection +
+          "</span><br>";
+        let resultado = playRound(button.id, computerSelection);
+        mostrarResultado(resultado);
+      });
+    });
+
+    function mostrarResultado(resultado) {
+      if (resultado != "tie!") {
+        if (resultado == "player wins") {
+          marcadorUsuario++;
+        } else {
+          marcadorComputer++;
+        }
+      }
+
+      let divResultado = document.getElementById("results");
+      divResultado.innerHTML +=
+        "<span>Results User: " +
+        marcadorUsuario +
+        " - Computer: " +
+        marcadorComputer +
+        "</span><br>";
+      if (marcadorComputer >= 5 || marcadorUsuario >= 5) {
+        divResultado.innerHTML +=
+          "<span>FIN Usuario: " +
+          marcadorUsuario +
+          " - Computer: " +
+          marcadorComputer +
+          "</span><br>";
+        buttons.forEach((button) => {
+          button.disabled = true;
+        });
+      }
+    }
+
     function getComputerChoice() {
       let items = ["ROCK", "PAPER", "SCISSORS"];
       let item = items[Math.floor(Math.random() * items.length)];
-      console.log(item);
       return item;
     }
 
@@ -41,31 +94,5 @@
         }
       }
     }
-
-    function game() {
-      let marcadorUsuario = 0,
-        marcadorComputer = 0;
-      let playerSelection, computerSelection, resultado;
-      for (let i = 0; i < 5; i++) {
-        playerSelection = prompt("Enter ROCK, PAPER or SCISSORS");
-        computerSelection = getComputerChoice();
-        resultado = playRound(playerSelection, computerSelection);
-        if (resultado == "tie!") {
-          i--;
-        } else {
-          if (resultado == "player wins") {
-            marcadorUsuario++;
-          } else {
-            marcadorComputer++;
-          }          
-        }
-        console.log(resultado);
-      }
-      console.log(
-        "Results User: " + marcadorUsuario + " - Computer: " + marcadorComputer
-      );
-    }
-
-    game();
   </script>
 </html>
